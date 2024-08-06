@@ -1,0 +1,20 @@
+.NavBar {
+  display: flex;
+  align-items: center;
+  padding: 14px 20px;
+  background-color: var(--primary-background);
+  border-bottom: 2px solid;
+  border-color: var(--primary-background);
+}
+
+.NavBar img {
+  border: 3px solid var(--primary-foreground);
+  border-radius: 50%;
+}
+
+.NavBar h1 {
+  margin: 0 auto 0 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 25px;
+  color: var(--primary-foreground);
+}

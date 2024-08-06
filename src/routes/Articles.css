@@ -1,0 +1,18 @@
+section {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px;
+}
+
+section .article-card {
+    margin: 10px auto;
+}
+
+section .article-card .article-card-user-comments,
+section .article-card .article-card-date-likes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
