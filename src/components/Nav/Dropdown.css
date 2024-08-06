@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+button div {
+  margin: 3px 0;
+  padding: 0 15px;
+  border: 3px solid var(--primary-foreground);
+}
