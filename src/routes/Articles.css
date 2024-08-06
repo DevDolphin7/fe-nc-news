@@ -5,14 +5,23 @@ section {
     margin: 20px;
 }
 
-section .article-card {
+section .article-card,
+section .comment-card {
     margin: 10px auto;
 }
 
 section .article-card .article-card-user-comments,
-section .article-card .article-card-date-likes {
+section .article-card .article-card-date-likes,
+section .comment-card .comment-card-date-likes {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
+}
+
+section .comment-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
