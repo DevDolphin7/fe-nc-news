@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LoadArticles, Loading } from "../hooks/Loading";
-import ArticleCard from "../components/ArticleCard";
+import ArticlesCard from "../components/ArticlesCard";
 import "./Articles.css";
 
 export default function Articles() {
@@ -24,7 +24,7 @@ export default function Articles() {
       {articles.map((article) => (
         <div key={article.title} className="article-card">
           <Link to={`/articles/${article.article_id}`}>
-            <ArticleCard article={article} />
+            <ArticlesCard article={article} />
           </Link>
         </div>
       ))}
