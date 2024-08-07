@@ -55,7 +55,7 @@ export default function ArticlesCard({ article }) {
           className="article-card-user-comments"
         >
           {article.author}
-          <span style={{display: 'flex', alignItems: 'center'}}>
+          <span style={{ display: "flex", alignItems: "center" }}>
             <img
               src={CommentImage}
               height="25px"
