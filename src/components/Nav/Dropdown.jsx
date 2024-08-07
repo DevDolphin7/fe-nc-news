@@ -1,34 +1,65 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
-import Stack from "@mui/material/Stack";
 import "./Dropdown.css";
 
-export default function Dropdown({ navigateLookup }) {
-  const [open, setOpen] = useState(false);
-  const anchorRef = useRef(null);
+// What does it need to do? Show:
+//    Welcome {user}
+//    -----divider------
+//    < Articles
+//    Authors
+//    -----divider------
+//    < Sort
+//    < Order
+
+// How does it do it? An array of srtings and objects:
+// ["Welcome, user",
+//  "--divider--",
+//  {"< Articles": [{"Topic 1": callbackFn}, {"Topic 2": callbackFn}]},
+//  {Authors: callbackFn},
+//  "--divider--",
+//  {"< Sort": [{"author": "?sort_by=author"}]}
+//  ]
+
+// Behaviour:
+// Any string is displayed (not a button)
+// Any keyword "--divider" shows a divider
+// Any object key is displayed
+// Any object where value is a function, invoke the function
+// Any object where value is a list acts as above - ONLY DESIGNED FOR 1 SUB MENU
+
+// Every item in menuItems may only have some of these keys: text, button, subMenu, select, divider
+//    Any string would result: {text: "string"}
+//    Any divider would result: {divider: true}
+//    Any object key with a function value would result: {button: "key", select: callbackFn}
+//    Any object key with an array value would result: {button: "key", subMenu: [<parsed sub menu>]}
+
+export default function Dropdown(desiredMenu) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+  desiredMenu = [
+    "Welcome User",
+    "--divider--",
+    { Articles: ["Here ok"] },
+    {
+      Authors: () => {
+        console.log("Here in Authors callbackFn");
+      },
+    },
+  ];
+  const menuItems = [
+    { text: "Welcome User" },
+    { text: "--divider--" },
+    { button: "Articles", subMenu: [{ text: "Here ok" }] },
+    {
+      button: "Authors",
+      select: () => {
+        return console.log("Here in Authors callbackFn");
+      },
+    },
+  ];
 
   const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-    setOpen(false);
-
-    const clickedButton = event.target.innerText;
-    navigateLookup[clickedButton]
-      ? navigate(navigateLookup[clickedButton])
-      : null;
+    console.log("Hello");
   };
 
   function handleListKeyDown(event) {
@@ -40,67 +71,71 @@ export default function Dropdown({ navigateLookup }) {
     }
   }
 
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = useRef(open);
-  useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
-
-    prevOpen.current = open;
-  }, [open]);
-
   return (
-    <Stack>
-      <Button
-        ref={anchorRef}
-        id="composition-button"
-        aria-controls={open ? "composition-menu" : undefined}
-        aria-expanded={open ? "true" : undefined}
-        aria-haspopup="true"
-        onClick={handleToggle}
+    <>
+      <button
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        className="toggle-dropdown"
       >
-        <div></div>
-        <div></div>
-        <div></div>
-      </Button>
-      <Popper
-        open={open}
-        anchorEl={anchorRef.current}
-        role={undefined}
-        placement="bottom-start"
-        transition
-        disablePortal
-      >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === "bottom-start" ? "left top" : "left bottom",
-            }}
+        <div className="button-div"></div>
+        <div className="button-div"></div>
+        <div className="button-div"></div>
+      </button>
+      {dropdownOpen && (
+        <DropdownMenu menuItems={menuItems} setDropdownOpen={setDropdownOpen} />
+      )}
+    </>
+    //onKeyDown=handleListKeyDown
+  );
+}
+
+export function DropdownMenu({ menuItems, setDropdownOpen }) {
+  return (
+    <div className="dropdown-menu">
+      {menuItems.map((item, index) => {
+        if (item.select) {
+          item.handleSelect = () => {
+            setDropdownOpen(false);
+            item.select();
+          };
+        }
+        return (
+          <DropdownItem
+            key={index}
+            // left={item.subMenu}
+            click={item.handleSelect}
+            textOnly={item.text}
+            setDropdownOpen={setDropdownOpen}
           >
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList
-                  autoFocusItem={open}
-                  id="composition-menu"
-                  aria-labelledby="composition-button"
-                  onKeyDown={handleListKeyDown}
-                >
-                  {Object.keys(navigateLookup).map((buttonText) => {
-                    return (
-                      <MenuItem key={buttonText} onClick={handleClose}>
-                        {buttonText}
-                      </MenuItem>
-                    );
-                  })}
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </Stack>
+            {item.button}
+          </DropdownItem>
+        );
+      })}
+    </div>
+  );
+}
+
+export function DropdownItem(props) {
+  if (props.textOnly === "--divider--") {
+    return <div className="dropdown-menu-item-divider"></div>;
+  } else if (props.textOnly) {
+    return <div className="dropdown-menu-item-text-only">{props.textOnly}</div>;
+  } else if (props.click) {
+    return (
+      <button onClick={props.click} className="dropdown-menu-item">
+        <span>{props.left}</span>
+        <span>{props.children}</span>
+      </button>
+    );
+  }
+  return (
+    <button onClick={props.click} className="dropdown-menu-item">
+      <span>
+        <div className="sub-menu-div-upper"></div>
+        <div className="sub-menu-div-lower"></div>
+        {props.left}
+      </span>
+      <span>{props.children}</span>
+    </button>
   );
 }
