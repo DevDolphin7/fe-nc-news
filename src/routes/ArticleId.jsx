@@ -8,10 +8,10 @@ import "./Articles.css";
 
 export default function ArticleId() {
   const { article_id } = useParams();
-  const [renderNewComment, setRenderNewComment] = useState(false);
+  const [rerender, setRerender] = useState(false);
 
-  const { isLoading, articles } = LoadArticles({ articleId: `/${article_id}`});
-  const { isLoadingComments, comments } = LoadComments(article_id, {reload: renderNewComment});
+  const { isLoading, articles } = LoadArticles({ articleId: `/${article_id}` }, rerender);
+  const { isLoadingComments, comments } = LoadComments(article_id, rerender);
 
   if (isLoading || isLoadingComments) {
     return <Loading />;
@@ -26,14 +26,15 @@ export default function ArticleId() {
       </section>
       <div className="page-divider"></div>
       <section id="comments">
-        <NewComment
-          renderNewComment={renderNewComment}
-          setRenderNewComment={setRenderNewComment}
-        />
+        <NewComment rerender={rerender} setRerender={setRerender} />
         {comments.map((comment) => {
           return (
             <div key={comment.comment_id} className="comment-card">
-              <CommentCard comment={comment} />
+              <CommentCard
+                comment={comment}
+                rerender={rerender}
+                setRerender={setRerender}
+              />
             </div>
           );
         })}

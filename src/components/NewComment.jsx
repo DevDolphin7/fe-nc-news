@@ -10,7 +10,7 @@ import CloseImage from "../assets/Close.png";
 import "./NewComment.css";
 import { UsernameContext } from "../contexts/UsernameProvider";
 
-export default function NewComment({ renderNewComment, setRenderNewComment }) {
+export default function NewComment({ rerender, setRerender }) {
   const [newCommentOpen, setNewCommentOpen] = useState(false);
   const [commentInput, setCommentInput] = useState("");
   const { article_id } = useParams();
@@ -26,7 +26,7 @@ export default function NewComment({ renderNewComment, setRenderNewComment }) {
       postComment(article_id, username, commentInput)
         .then(() => {
           setCommentInput("");
-          setRenderNewComment(!renderNewComment);
+          setRerender(!rerender);
         })
         .catch((error) => {
           alert(error);
@@ -60,7 +60,11 @@ export default function NewComment({ renderNewComment, setRenderNewComment }) {
           value={commentInput}
           onChange={handleInput}
         />
-        <Typography variant="body1" color="text.primary" sx={{display:"flex", alignItems: "center"}}>
+        <Typography
+          variant="body1"
+          color="text.primary"
+          sx={{ display: "flex", alignItems: "center" }}
+        >
           {username}:
         </Typography>
         <Button onClick={addComment} sx={{ color: "#eb1c24" }}>

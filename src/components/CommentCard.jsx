@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { patchVote } from "../utils/api";
 import Button from "@mui/material/Button";
+import { patchVote, deleteComment } from "../utils/api";
+import { UsernameContext } from "../contexts/UsernameProvider";
 import LikeImage from "../assets/Like.png";
+import DeleteImage from "../assets/DeleteComment.png";
 
-export default function CommentCard({ comment }) {
+export default function CommentCard({ comment, rerender, setRerender }) {
   const [commentOptimisticLike, setCommentOptimisticLike] = useState(0);
   const date = new Date(comment.created_at).toDateString();
+  const username = useContext(UsernameContext);
 
   function handleCommentLike() {
     if (commentOptimisticLike === 0) {
@@ -26,8 +29,26 @@ export default function CommentCard({ comment }) {
     }
   }
 
+  function handleCommentDelete() {
+    deleteComment(comment.comment_id)
+      .then(() => {
+        setRerender(!rerender);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
+
+  function removeCommentButton() {
+    return (
+      <Button variant="text" onClick={handleCommentDelete}>
+        <img src={DeleteImage} height="25px" className="delete" />
+      </Button>
+    );
+  }
+
   return (
-    <Card sx={{ minWidth: 250, width: "88vw"}}>
+    <Card sx={{ minWidth: 250, width: "88vw" }}>
       <CardContent>
         <Typography gutterBottom variant="h6" component="div">
           {comment.author}:
@@ -38,12 +59,17 @@ export default function CommentCard({ comment }) {
         <Typography
           variant="body2"
           color="text.secondary"
-          className="comment-card-date-likes"
+          className={
+            comment.author === username
+              ? "comment-card-delete-like"
+              : "comment-card-date-likes"
+          }
         >
           {date}
           <span>
+            {comment.author === username && removeCommentButton()}
             <Button variant="text" onClick={handleCommentLike}>
-              <img src={LikeImage} height="25px" />
+              <img src={LikeImage} height="25px" className="like" />
             </Button>
             {comment.votes + commentOptimisticLike}
           </span>
