@@ -12,7 +12,8 @@ section .comment-card {
 
 section .article-card .article-card-user-comments,
 section .article-card .article-card-date-likes,
-section .comment-card .comment-card-date-likes {
+section .comment-card .comment-card-date-likes,
+section .comment-card .comment-card-delete-like {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -82,12 +83,14 @@ section .comment-card .comment-card-date-likes {
   }
 }
 
-section .article-card .article-card-user-comments img {
+section .article-card .article-card-user-comments img,
+.comment-card-delete-like .delete {
   animation: shake-comment 3s linear infinite;
 }
 
 section .article-card .article-card-date-likes img,
-section .comment-card .comment-card-date-likes img {
+section .comment-card .comment-card-date-likes img,
+.comment-card-delete-like .like {
   animation: shake-like 3s linear infinite;
 }
 
