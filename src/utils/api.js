@@ -27,3 +27,7 @@ export function patchVote(endpoint, inc_votes) {
 export function postComment(articleId, username, body){
   return dolphinNewsApi.post(`/articles/${articleId}/comments`, {username, body})
 }
+
+export function deleteComment(commentId) {
+  return dolphinNewsApi.delete(`/comments/${commentId}`)
+}
