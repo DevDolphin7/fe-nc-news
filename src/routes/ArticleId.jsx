@@ -10,7 +10,10 @@ export default function ArticleId() {
   const { article_id } = useParams();
   const [rerender, setRerender] = useState(false);
 
-  const { isLoading, articles } = LoadArticles({ articleId: `/${article_id}` }, rerender);
+  const { isLoading, articles } = LoadArticles({
+    articleId: `/${article_id}`,
+    rerender,
+  });
   const { isLoadingComments, comments } = LoadComments(article_id, rerender);
 
   if (isLoading || isLoadingComments) {
