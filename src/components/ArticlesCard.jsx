@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 export default function ArticlesCard({ article }) {
   const date = new Date(article.created_at).toDateString();
   return (
-    <Card sx={{ maxWidth: 345, minWidth: 250}}>
+    <Card sx={{ maxWidth: 345, minWidth: 250, width: "88vw"}}>
       <CardMedia
         component="img"
         height="250"

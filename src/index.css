@@ -18,7 +18,7 @@ html {
   --primary-foreground: #ffffff;
 }
 
-#divider {
+.page-divider {
   width: 90vw;
   margin: 0 5vw;
   border: 3px solid var(--primary-background);

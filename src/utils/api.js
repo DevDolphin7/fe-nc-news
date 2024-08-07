@@ -19,3 +19,11 @@ export function getComments(articleId) {
       return data.comments;
     });
 }
+
+export function patchVote(endpoint, inc_votes) {
+  return dolphinNewsApi.patch(endpoint, { inc_votes });
+}
+
+export function postComment(articleId, username, body){
+  return dolphinNewsApi.post(`/articles/${articleId}/comments`, {username, body})
+}
