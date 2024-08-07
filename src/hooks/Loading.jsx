@@ -3,7 +3,13 @@ import Lottie from "lottie-react";
 import { getArticles, getComments } from "../utils/api";
 import LoadingDolphin from "../assets/LoadingDolphin.json";
 
-export function LoadArticles({ topic, sortArticlesBy, order, articleId = "" }, reload) {
+export function LoadArticles({
+  topic,
+  sortArticlesBy,
+  order,
+  articleId = "",
+  rerender,
+}) {
   const [articles, setArticles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -17,12 +23,12 @@ export function LoadArticles({ topic, sortArticlesBy, order, articleId = "" }, r
       .catch((error) => {
         alert(error);
       });
-  }, [reload]);
+  }, [rerender]);
 
   return { isLoading, articles };
 }
 
-export function LoadComments(articleId, reload) {
+export function LoadComments(articleId, rerender) {
   const [comments, setComments] = useState([]);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
 
@@ -30,14 +36,14 @@ export function LoadComments(articleId, reload) {
     setIsLoadingComments(true);
     getComments(articleId)
       .then((comments) => {
-        comments.sort((a, b) => a.created_at < b.created_at)
+        comments.sort((a, b) => a.created_at < b.created_at);
         setComments(comments);
         setIsLoadingComments(false);
       })
       .catch((error) => {
         alert(error);
       });
-  }, [reload]);
+  }, [rerender]);
 
   return { isLoadingComments, comments };
 }
