@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import { getArticles, getComments } from "../utils/api";
 import LoadingDolphin from "../assets/LoadingDolphin.json";
+import NotFound from "../assets/NotFound.json";
 
 export function LoadArticles({
   topic,
@@ -21,7 +22,12 @@ export function LoadArticles({
         setIsLoading(false);
       })
       .catch((error) => {
-        alert(error);
+        if (error.message === "Request failed with status code 404") {
+          setArticles(false);
+          setIsLoading(false);
+        } else {
+          alert(error);
+        }
       });
   }, [rerender]);
 
@@ -41,7 +47,12 @@ export function LoadComments(articleId, rerender) {
         setIsLoadingComments(false);
       })
       .catch((error) => {
-        alert(error);
+        if (error.message === "Request failed with status code 404") {
+          setComments(false);
+          setIsLoadingComments(false);
+        } else {
+          alert(error);
+        }
       });
   }, [rerender]);
 
@@ -50,4 +61,8 @@ export function LoadComments(articleId, rerender) {
 
 export function Loading() {
   return <Lottie animationData={LoadingDolphin} loop={true} />;
+}
+
+export function ErrorLoading() {
+  return <Lottie animationData={NotFound} loop={true} />;
 }
