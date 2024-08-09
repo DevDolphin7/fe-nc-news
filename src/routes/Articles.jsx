@@ -8,7 +8,7 @@ export default function Articles() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [rerender, setRerender] = useState(false);
   const topic = searchParams.get("topic");
-  const sortArticlesBy = searchParams.get("sortArticlesBy");
+  const sortArticlesBy = searchParams.get("sort_by");
   const order = searchParams.get("order");
 
   useEffect(() => {
