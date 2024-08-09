@@ -4,11 +4,11 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { UsernameContext } from "../contexts/UsernameProvider";
 import { postComment } from "../utils/api";
 import AddCommentImage from "../assets/AddComment.png";
 import CloseImage from "../assets/Close.png";
 import "./NewComment.css";
-import { UsernameContext } from "../contexts/UsernameProvider";
 
 export default function NewComment({ rerender, setRerender }) {
   const [newCommentOpen, setNewCommentOpen] = useState(false);
@@ -21,21 +21,23 @@ export default function NewComment({ rerender, setRerender }) {
     function handleInput(event) {
       event.preventDefault();
       setCommentInput(event.target.value);
-      event.target.value === "" ? setDisableButton(true) : setDisableButton(false);
+      event.target.value === ""
+        ? setDisableButton(true)
+        : setDisableButton(false);
     }
 
     function addComment() {
-      if (commentInput !== "") {
-        postComment(article_id, username, commentInput)
-          .then(() => {
-            setCommentInput("");
-            setDisableButton(true);
-            setRerender(!rerender);
-          })
-          .catch((error) => {
-            alert(error);
-          });
-      }
+      setDisableButton(true);
+      postComment(article_id, username, commentInput)
+        .then(() => {
+          setCommentInput("");
+          setDisableButton(false);
+          setRerender(!rerender);
+        })
+        .catch((error) => {
+          setDisableButton(false);
+          alert(error);
+        });
     }
 
     return (
@@ -53,9 +55,6 @@ export default function NewComment({ rerender, setRerender }) {
         noValidate
         autoComplete="off"
       >
-        {
-          // Input is a controlled component utilising handleInput
-        }
         <TextField
           error
           fullWidth
