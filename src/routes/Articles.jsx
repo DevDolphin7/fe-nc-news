@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { LoadArticles, Loading } from "../hooks/Loading";
-import ArticlesCard from "../components/ArticlesCard";
+import ArticlesCard from "../components/ListArticleCard";
 import "./Articles.css";
 
 export default function Articles() {

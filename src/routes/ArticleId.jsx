@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { LoadArticles, LoadComments, Loading } from "../hooks/Loading";
-import ArticleCard from "../components/ArticleCard";
+import ArticleCard from "../components/FullArticleCard";
 import NewComment from "../components/NewComment";
 import CommentCard from "../components/CommentCard";
 import "./Articles.css";
