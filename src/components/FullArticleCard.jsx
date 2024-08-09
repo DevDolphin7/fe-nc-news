@@ -3,30 +3,12 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { patchVote } from "../utils/api";
-import LikeImage from "../assets/Like.png";
+import LikeButton from "./LikeButton";
 import CommentImage from "../assets/Comment.png";
 
 export default function ArticlesCard({ article }) {
   const [articleOptimisticLike, setArticleOptimisticLike] = useState(0);
   const date = new Date(article.created_at).toDateString();
-
-  function handleArticleLike() {
-    if (articleOptimisticLike === 0) {
-      setArticleOptimisticLike(1);
-      patchVote(`/articles/${article.article_id}`, 1).catch((error) => {
-        setArticleOptimisticLike(0);
-        alert(error);
-      });
-    } else {
-      setArticleOptimisticLike(0);
-      patchVote(`/articles/${article.article_id}`, -1).catch((error) => {
-        setArticleOptimisticLike(1);
-        alert(error);
-      });
-    }
-  }
 
   return (
     <Card sx={{ minWidth: 250, width: "88vw" }}>
@@ -71,9 +53,12 @@ export default function ArticlesCard({ article }) {
         >
           {date}
           <span>
-            <Button variant="text" onClick={handleArticleLike}>
-              <img src={LikeImage} height="25px" />
-            </Button>
+            <LikeButton
+              optimisticLike={articleOptimisticLike}
+              setOptimisticLike={setArticleOptimisticLike}
+              id={article.article_id}
+              endpoint={"articles"}
+            />
             {article.votes + articleOptimisticLike}
           </span>
         </Typography>
