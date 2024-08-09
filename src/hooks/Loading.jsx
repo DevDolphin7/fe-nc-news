@@ -64,5 +64,5 @@ export function Loading() {
 }
 
 export function ErrorLoading() {
-  return <Lottie animationData={NotFound} loop={true} />;
+  return <Lottie animationData={NotFound} loop={true} style={{ position: "relative", zIndex: "-1" }} />;
 }

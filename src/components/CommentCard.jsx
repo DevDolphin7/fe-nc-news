@@ -3,31 +3,15 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { patchVote, deleteComment } from "../utils/api";
+import { deleteComment } from "../utils/api";
 import { UsernameContext } from "../contexts/UsernameProvider";
-import LikeImage from "../assets/Like.png";
+import LikeButton from "./LikeButton";
 import DeleteImage from "../assets/DeleteComment.png";
 
 export default function CommentCard({ comment, rerender, setRerender }) {
   const [commentOptimisticLike, setCommentOptimisticLike] = useState(0);
   const date = new Date(comment.created_at).toDateString();
   const username = useContext(UsernameContext);
-
-  function handleCommentLike() {
-    if (commentOptimisticLike === 0) {
-      setCommentOptimisticLike(1);
-      patchVote(`/comments/${comment.comment_id}`, 1).catch((error) => {
-        setCommentOptimisticLike(0);
-        alert(error);
-      });
-    } else {
-      setCommentOptimisticLike(0);
-      patchVote(`/comments/${comment.comment_id}`, -1).catch((error) => {
-        setCommentOptimisticLike(1);
-        alert(error);
-      });
-    }
-  }
 
   function handleCommentDelete() {
     deleteComment(comment.comment_id)
@@ -68,9 +52,12 @@ export default function CommentCard({ comment, rerender, setRerender }) {
           {date}
           <span>
             {comment.author === username && removeCommentButton()}
-            <Button variant="text" onClick={handleCommentLike}>
-              <img src={LikeImage} height="25px" className="like" />
-            </Button>
+            <LikeButton
+              optimisticLike={commentOptimisticLike}
+              setOptimisticLike={setCommentOptimisticLike}
+              id={comment.comment_id}
+              endpoint={"comments"}
+            />
             {comment.votes + commentOptimisticLike}
           </span>
         </Typography>

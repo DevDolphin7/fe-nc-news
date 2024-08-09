@@ -59,7 +59,6 @@ export function menuItemLookup(page) {
       "--divider--",
       {
         Sort: [
-          "--divider--",
           "Sort by",
           "--divider--",
           "Author",
