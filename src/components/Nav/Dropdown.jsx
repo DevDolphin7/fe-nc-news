@@ -194,7 +194,6 @@ export function DropdownMenu({ menuItems, setOpen, subMenus = [] }) {
                   </DropdownItem>
                 );
               })}
-              ;
             </div>
           </CSSTransition>
         );
