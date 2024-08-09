@@ -6,9 +6,25 @@
   border: 14px outset rgba(0, 0, 0, 0.1);
 }
 
+@keyframes logo {
+  0% {
+    transform: rotate(90deg);
+  }
+  70% {
+    transform: rotate(90deg);
+  }
+  85% {
+    transform: rotate(65deg);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
 .NavBar img {
   border: 3px solid var(--primary-foreground);
   border-radius: 50%;
+  animation: logo 5s ease infinite;
 }
 
 .NavBar h1 {
