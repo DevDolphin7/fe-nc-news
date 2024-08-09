@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { LoadArticles, LoadComments, Loading } from "../hooks/Loading";
+import {
+  LoadArticles,
+  LoadComments,
+  Loading,
+  ErrorLoading,
+} from "../hooks/Loading";
 import ArticleCard from "../components/FullArticleCard";
 import NewComment from "../components/NewComment";
 import CommentCard from "../components/CommentCard";
@@ -18,6 +23,14 @@ export default function ArticleId() {
 
   if (isLoading || isLoadingComments) {
     return <Loading />;
+  }
+
+  if (!articles || !comments) {
+    return (
+      <div style={{ margin: "20%" }}>
+        <ErrorLoading />
+      </div>
+    );
   }
 
   return (
