@@ -42,7 +42,6 @@ export function LoadComments(articleId, rerender) {
     setIsLoadingComments(true);
     getComments(articleId)
       .then((comments) => {
-        comments.sort((a, b) => a.created_at < b.created_at);
         setComments(comments);
         setIsLoadingComments(false);
       })
@@ -64,5 +63,11 @@ export function Loading() {
 }
 
 export function ErrorLoading() {
-  return <Lottie animationData={NotFound} loop={true} style={{ position: "relative", zIndex: "-1" }} />;
+  return (
+    <Lottie
+      animationData={NotFound}
+      loop={true}
+      style={{ position: "relative", zIndex: "-1" }}
+    />
+  );
 }
