@@ -10,7 +10,7 @@ export default function Nav() {
   return (
     <div className="NavBar">
       <Link to="/">
-        <img src={logoImage} />
+        <img src={logoImage} height={64}/>
       </Link>
       <h1>Dolphin News</h1>
       <Dropdown menu={menuItemLookup(url.get())} />
@@ -21,8 +21,6 @@ export default function Nav() {
 export function menuItemLookup(page) {
   const navigate = useNavigate();
 
-  // Currently the required object for the dropdown menu is functional but ugly
-  //  - to be updated after NC task completion!
   if ((page = "/" || page.slice(0, 9) === "/articles")) {
     return [
       "Welcome, cooljmessy",
