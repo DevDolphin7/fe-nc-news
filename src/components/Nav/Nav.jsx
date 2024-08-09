@@ -9,8 +9,8 @@ let order = "Descending";
 export default function Nav() {
   return (
     <div className="NavBar">
-      <Link to="/">
-        <img src={logoImage} height={64}/>
+      <Link to="/" onClick={() => url.setParams()}>
+        <img src={logoImage} height={64} />
       </Link>
       <h1>Dolphin News</h1>
       <Dropdown menu={menuItemLookup(url.get())} />
