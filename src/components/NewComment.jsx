@@ -13,6 +13,7 @@ import { UsernameContext } from "../contexts/UsernameProvider";
 export default function NewComment({ rerender, setRerender }) {
   const [newCommentOpen, setNewCommentOpen] = useState(false);
   const [commentInput, setCommentInput] = useState("");
+  const [disableButton, setDisableButton] = useState(true);
   const { article_id } = useParams();
   const username = useContext(UsernameContext);
 
@@ -20,17 +21,21 @@ export default function NewComment({ rerender, setRerender }) {
     function handleInput(event) {
       event.preventDefault();
       setCommentInput(event.target.value);
+      event.target.value === "" ? setDisableButton(true) : setDisableButton(false);
     }
 
     function addComment() {
-      postComment(article_id, username, commentInput)
-        .then(() => {
-          setCommentInput("");
-          setRerender(!rerender);
-        })
-        .catch((error) => {
-          alert(error);
-        });
+      if (commentInput !== "") {
+        postComment(article_id, username, commentInput)
+          .then(() => {
+            setCommentInput("");
+            setDisableButton(true);
+            setRerender(!rerender);
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      }
     }
 
     return (
@@ -67,7 +72,11 @@ export default function NewComment({ rerender, setRerender }) {
         >
           {username}:
         </Typography>
-        <Button onClick={addComment} sx={{ color: "#eb1c24" }}>
+        <Button
+          onClick={addComment}
+          sx={{ color: "#eb1c24" }}
+          disabled={disableButton}
+        >
           Post
         </Button>
       </Box>
